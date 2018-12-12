@@ -1,5 +1,5 @@
 # ------ HEADER ------ #
-FROM alpine:3.7
+FROM alpine:3.8
 
 # ------ RUN  ------ #
 RUN apk add --update  --no-cache python3 apache2-utils \
@@ -12,15 +12,22 @@ RUN apk add --update --no-cache --virtual .dep_bcrypt python3-dev gcc g++ libffi
     && /usr/bin/python3 -m pip install --upgrade radicale[bcrypt] \
     && apk del .dep_bcrypt
 
-RUN mkdir -p /data \
-    && mkdir -p /config
+RUN mkdir -p /radicale/etc \
+    && mkdir -p /radicale/var \
+    && mkdir -p /home/radicale
 
-ADD ./source/radicale.conf /config/default.conf
-ADD ./source/rights.conf /config/rights
-ADD ./source/users.bcrypt /config/users
+RUN addgroup --gid 1000 -S radicale \
+	&& adduser --uid 1000 -D -S -h /home/radicale -s /sbin/nologin -G radicale radicale
+
+RUN chown -R radicale:radicale /radicale
+
+ADD ./source/radicale.conf /radicale/etc/default.conf
+ADD ./source/rights.conf /radicale/etc/rights
+ADD ./source/users.bcrypt /radicale/etc/users
 
 # ------ VOLUMES ------ #
-VOLUME ["/data", "/config"]
+VOLUME ["/radicale/etc", "/radicale/var"]
 
 # ------ CMD/START/STOP ------ #
-ENTRYPOINT ["/usr/bin/python3", "-m", "radicale", "--config", "/config/default.conf"]
+USER radicale:radicale
+ENTRYPOINT ["/usr/bin/python3", "-m", "radicale", "--config", "/radicale/etc/default.conf"]
