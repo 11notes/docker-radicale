@@ -1,30 +1,21 @@
 # docker-radicale
 
-Dockerfile to create and run a single radicale instance for CardDAV and CalDAV
+Dockerfile to create and run a single radicale instance for CardDAV and CalDAV.
 
-## docker volumes
+## Volumes
 
 /radicale/etc
 
-Contains: Holds all the config information of radicale
+Purpose: Holds all the config information of radicale
 
 /radicale/var
 
-Contains: Stores the calendars, adressbooks and all other objects which must be persistent
+Purpose: Stores the calendars, adressbooks and all other objects
 
 
-## docker build
-
-```shell
-docker build -t YOURNAME/YOURCONTAINER:YOURTAG .
-```
-
-## docker run
-
-## docker run
+## Run
 ```shell
 docker run --name nginx \
-    -u 1000:1000 \
     -v volume-etc:/radicale/etc \
     -v volume-var:/radicale/var \
     -d 11notes/radicale:latest 
@@ -96,11 +87,16 @@ permission: r
 
 If the access_user has his own addressbook & the global addressbook, just remove the symbolic link for access_user but leave the rights to be able to read the main_user addressbook. The collection name supports RegExp.
 
-## build with
+## Docker -u 1000:1000 (no root initiative)
+
+As part to make containers more secure, this container will not run as root, but as uid:gid 1000:1000. Therefore the default TCP port 80 was changed to 8080 (/source/radicale.conf).
+
+## Build with
 
 * [radicale](https://radicale.org/about/) - radicale CalDAV/CardDAV server (created by Kozea@github)
 
-## tipps
+## Tips
 
-* [alpine-docker-netshare](https://github.com/11notes/alpine-docker-netshare) - Examples to store persistent data on external storage systems
+* Don't bind to ports < 1024 (requires root), use NAT
+* [Permanent Storge with NFS/CIFS/...](https://github.com/11notes/alpine-docker-netshare) - Module to store permanent container data via NFS/CIFS/...
 * [Outlook CalDAV/CardDAV sync](https://caldavsynchronizer.org/) - Plugin to sync outlook with any CalDAV or CardDAV server
