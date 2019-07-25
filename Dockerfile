@@ -1,5 +1,5 @@
 # :: Header
-FROM alpine:3.9
+FROM alpine:3.10
 
 # :: Run
 RUN apk add --update  --no-cache python3 apache2-utils \
@@ -11,6 +11,9 @@ RUN /usr/bin/python3 -m pip install --upgrade radicale
 RUN apk add --update --no-cache --virtual .dep_bcrypt python3-dev gcc g++ libffi-dev \
     && /usr/bin/python3 -m pip install --upgrade radicale[bcrypt] \
     && apk del .dep_bcrypt
+
+# :: Version
+RUN echo "radicale version: app.version{{$(radicale --version)}}"
 
 RUN mkdir -p /radicale/etc \
     && mkdir -p /radicale/var \
