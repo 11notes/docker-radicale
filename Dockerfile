@@ -13,7 +13,7 @@ RUN apk add --update --no-cache --virtual .dep_bcrypt python3-dev gcc g++ libffi
     && apk del .dep_bcrypt
 
 # :: Version
-RUN echo "radicale version: app.version{{$(radicale --version)}}"
+RUN echo "CI/CD{{$(radicale --version 2>&1)}}"
 
 RUN mkdir -p /radicale/etc \
     && mkdir -p /radicale/var \
