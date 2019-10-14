@@ -15,11 +15,14 @@ Purpose: Stores the calendars, adressbooks and all other objects
 
 ## Run
 ```shell
-docker run --name nginx \
+docker run --name radicale \
     -v volume-etc:/radicale/etc \
     -v volume-var:/radicale/var \
-    -d 11notes/radicale:latest 
+    -d 11notes/radicale:[tag]
 ```
+
+## Defaults
+* HTTP 401 / admin:foo, user:bar (/radicale/etc/users) - please change with bcrypt!
 
 ## radicale create objects
 
@@ -36,7 +39,7 @@ New password:
 
 ## radicale rights (ACL)
 
-If you plan to use this container to create multiple calendars between different users you have to specify which user can access which calendars and adressbooks. To change rights edit the file /radicale/etc/rights.
+If you plan to use this container to create multiple addressbooks between different users you have to specify which user can access which adressbooks. To change rights edit the file /radicale/etc/rights.
 
 ```shell
 [admin]
@@ -89,10 +92,10 @@ If the access_user has his own addressbook & the global addressbook, just remove
 
 ## Docker -u 1000:1000 (no root initiative)
 
-As part to make containers more secure, this container will not run as root, but as uid:gid 1000:1000. Therefore the default TCP port 80 was changed to 8080 (/source/radicale.conf).
+As part to make containers more secure, this container will not run as root, but as uid:gid 1000:1000.
 
 ## Build with
-
+* [Alpine Linux](https://alpinelinux.org/) - Alpine Linux
 * [radicale](https://radicale.org/about/) - radicale CalDAV/CardDAV server (created by Kozea@github)
 
 ## Tips
