@@ -8,10 +8,11 @@ RUN mkdir -p /radicale/etc \
     && mkdir -p /home/radicale \
     mkdir -p /radicale/ssl
 
-RUN apk add --update --no-cache openssl \
+RUN apk add --update --virtual tmp_openssl openssl \
     && openssl req -nodes -newkey rsa:4096 -keyout /radicale/ssl/key.pem -out /tmp/csr.pem -subj "/C=CH/ST=ZH/L=Zurich/O=Docker/OU=Container/CN=Radicale" \
     && openssl x509 -req -days 3650 -in /tmp/csr.pem -signkey /radicale/ssl/key.pem -out /radicale/ssl/cert.pem \
-    && rm /tmp/csr.pem
+    && rm /tmp/csr.pem \
+    && apk del tmp_openssl
 
 RUN apk add --update  --no-cache python3 apache2-utils curl \
     && python3 -m ensurepip \
@@ -19,8 +20,9 @@ RUN apk add --update  --no-cache python3 apache2-utils curl \
 
 RUN /usr/bin/python3 -m pip install --upgrade radicale
 
-RUN apk add --update --no-cache python3-dev gcc g++ libffi-dev openssl \
-    && /usr/bin/python3 -m pip install --upgrade radicale[bcrypt]
+RUN apk add --update --virtual tmp_bcrypt python3-dev gcc g++ libffi-dev openssl \
+    && /usr/bin/python3 -m pip install --upgrade radicale[bcrypt] \
+    && apk del tmp_bcrypt
 
 # :: Version
 RUN echo "CI/CD{{$(radicale --version 2>&1)}}"
