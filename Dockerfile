@@ -2,7 +2,7 @@
 FROM alpine:3.10
 
 # :: Run
-RUN apk add --update  --no-cache python3 apache2-utils \
+RUN apk add --update  --no-cache python3 apache2-utils curl \
     && python3 -m ensurepip \
     && pip3 install --upgrade pip setuptools
 
