@@ -2,22 +2,24 @@
 FROM alpine:3.10
 
 # :: Run
+RUN mkdir -p /radicale/etc \
+    && mkdir -p /radicale/var \
+    && mkdir -p /home/radicale \
+    mkdir -p /radicale/ssl
+
 RUN apk add --update  --no-cache python3 apache2-utils curl \
     && python3 -m ensurepip \
     && pip3 install --upgrade pip setuptools
 
 RUN /usr/bin/python3 -m pip install --upgrade radicale
 
-RUN apk add --update --no-cache --virtual .dep_bcrypt python3-dev gcc g++ libffi-dev \
+RUN apk add --update --no-cache --virtual .dep_bcrypt python3-dev gcc g++ libffi-dev openssl \
     && /usr/bin/python3 -m pip install --upgrade radicale[bcrypt] \
-    && apk del .dep_bcrypt
+    && openssl req -x509 -newkey rsa:4096 -keyout /radicale/ssl/server.key -out /radicale/ssl/server.crt -nodes -days 9999 \
+    && apk del .dep_bcryp
 
 # :: Version
 RUN echo "CI/CD{{$(radicale --version 2>&1)}}"
-
-RUN mkdir -p /radicale/etc \
-    && mkdir -p /radicale/var \
-    && mkdir -p /home/radicale
 
 # :: docker -u 1000:1000 (no root initiative)
 RUN addgroup --gid 1000 -S radicale \

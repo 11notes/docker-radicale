@@ -1,2 +1,2 @@
 #!/bin/sh
-curl --max-time 5 -kILs --fail http://localhost:5232
+curl --max-time 5 -kILs --fail https://localhost:5232
