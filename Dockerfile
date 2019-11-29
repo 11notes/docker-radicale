@@ -28,8 +28,14 @@ ADD ./source/radicale.conf /radicale/etc/default.conf
 ADD ./source/rights.conf /radicale/etc/rights
 ADD ./source/users.bcrypt /radicale/etc/users
 
+ADD ./source/healthcheck.sh /usr/local/bin/healthcheck.sh
+RUN chmod +x /usr/local/bin/healthcheck.sh
+
 # :: Volumes
 VOLUME ["/radicale/etc", "/radicale/var"]
+
+# :: Monitor
+HEALTHCHECK CMD /usr/local/bin/healthcheck.sh || exit 1
 
 # :: Start
 USER radicale
