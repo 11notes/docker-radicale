@@ -2,10 +2,16 @@
 FROM alpine:3.10
 
 # :: Run
+USER root
 RUN mkdir -p /radicale/etc \
     && mkdir -p /radicale/var \
     && mkdir -p /home/radicale \
     mkdir -p /radicale/ssl
+
+RUN apk add --update --no-cache openssl \
+    && openssl req -nodes -newkey rsa:4096 -keyout /radicale/ssl/key.pem -out /tmp/csr.pem -subj "/C=CH/ST=ZH/L=Zurich/O=Docker/OU=Container/CN=Radicale" \
+    && openssl x509 -req -days 3650 -in /tmp/csr.pem -signkey /radicale/ssl/key.pem -out /radicale/ssl/cert.pem \
+    && rm /tmp/csr.pem
 
 RUN apk add --update  --no-cache python3 apache2-utils curl \
     && python3 -m ensurepip \
@@ -13,11 +19,8 @@ RUN apk add --update  --no-cache python3 apache2-utils curl \
 
 RUN /usr/bin/python3 -m pip install --upgrade radicale
 
-RUN apk add --update --no-cache --virtual .dep_bcrypt python3-dev gcc g++ libffi-dev openssl \
-    && /usr/bin/python3 -m pip install --upgrade radicale[bcrypt] \
-    && openssl req -nodes -newkey rsa:4096 -keyout /radicale/ssl/server.key -out /tmp/csr.pem -subj "/C=CH/ST=ZH/L=Zurich/O=Docker/OU=Container/CN=Radicale" \
-    && openssl x509 -req -days 9999 -in /tmp/csr.pem -signkey /radicale/ssl/server.key -out /radicale/ssl/server.crt \
-    && apk del .dep_bcryp
+RUN apk add --update --no-cache python3-dev gcc g++ libffi-dev openssl \
+    && /usr/bin/python3 -m pip install --upgrade radicale[bcrypt]
 
 # :: Version
 RUN echo "CI/CD{{$(radicale --version 2>&1)}}"
