@@ -15,7 +15,8 @@ RUN /usr/bin/python3 -m pip install --upgrade radicale
 
 RUN apk add --update --no-cache --virtual .dep_bcrypt python3-dev gcc g++ libffi-dev openssl \
     && /usr/bin/python3 -m pip install --upgrade radicale[bcrypt] \
-    && openssl req -x509 -newkey rsa:4096 -keyout /radicale/ssl/server.key -out /radicale/ssl/server.crt -nodes -days 9999 \
+    && openssl req -nodes -newkey rsa:4096 -keyout /radicale/ssl/server.key -out /tmp/csr.pem -subj "/C=CH/ST=ZH/L=Zurich/O=Docker/OU=Container/CN=Radicale" \
+    && openssl x509 -req -days 9999 -in /tmp/csr.pem -signkey /radicale/ssl/server.key -out /radicale/ssl/server.crt \
     && apk del .dep_bcryp
 
 # :: Version
