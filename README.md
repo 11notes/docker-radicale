@@ -1,17 +1,9 @@
 # docker-radicale
-
-Dockerfile to create and run a single radicale instance for CardDAV and CalDAV.
+Small and lightweight radicale alpine container
 
 ## Volumes
-
-/radicale/etc
-
-Purpose: Holds all the config information of radicale
-
-/radicale/var
-
-Purpose: Stores the calendars, adressbooks and all other objects
-
+* /radicale/etc - Purpose: Holds all the config information of radicale
+* /radicale/var - Purpose: Stores the calendars, adressbooks and all other objects
 
 ## Run
 ```shell
@@ -23,13 +15,12 @@ docker run --name radicale \
 
 ## Defaults
 * HTTP 401 / admin:foo, user:bar (/radicale/etc/users) - please change with bcrypt!
+* 4096bit runtime RSA (created at container start)
 
 ## radicale create objects
-
 Access the container via http://YOUR_IP:5232 and login as either one of the two default users (admin:1234, user:1234) or create new users first. You can then create the desired CalDAV or CardDAV objects.
 
 ## radicale auth
-
 This radicale container will authenticate all users present in the /radicale/etc/users file. You can add and remove users from the /radicale/etc/users file by using htpasswd (either directly in the container or from a remote system).
 
 ```shell
@@ -38,7 +29,6 @@ New password:
 ```
 
 ## radicale rights (ACL)
-
 If you plan to use this container to create multiple addressbooks between different users you have to specify which user can access which adressbooks. To change rights edit the file /radicale/etc/rights.
 
 ```shell
@@ -91,7 +81,6 @@ permission: r
 If the access_user has his own addressbook & the global addressbook, just remove the symbolic link for access_user but leave the rights to be able to read the main_user addressbook. The collection name supports RegExp.
 
 ## Docker -u 1000:1000 (no root initiative)
-
 As part to make containers more secure, this container will not run as root, but as uid:gid 1000:1000.
 
 ## Build with
