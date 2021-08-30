@@ -1,9 +1,9 @@
 [admin]
 user: admin
 collection: .*
-permission: rw
+permission: Ww
 
 [user]
 user: user
 collection: .*
-permission: r
+permission: Rr
