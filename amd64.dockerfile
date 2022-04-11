@@ -4,6 +4,7 @@
     # :: SSL Settings
         ENV SSL_RSA_BITS=4096
         ENV SSL_ROOT="/radicale/ssl"
+        ENV RADICALE_VERSION=3.1.5
 
 # :: Run
     USER root
@@ -21,7 +22,7 @@
             && python3 -m ensurepip \
             && pip3 install --upgrade pip setuptools
 
-        RUN /usr/bin/python3 -m pip install --upgrade radicale
+        RUN /usr/bin/python3 -m pip install --upgrade https://github.com/Kozea/Radicale/archive/refs/tags/v${RADICALE_VERSION}.tar.gz
 
         RUN apk add --update --virtual tmp_bcrypt python3-dev gcc g++ libffi-dev openssl \
             && /usr/bin/python3 -m pip install --upgrade radicale[bcrypt] \
