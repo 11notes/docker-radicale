@@ -1,21 +1,24 @@
-# docker-radicale
-Small and lightweight radicale alpine container
+# Alpine :: Certbot
+Run Radicale based on Alpine Linux. Small, lightweight, secure and fast 🏔️
 
 ## Volumes
-* /radicale/etc - Purpose: Holds all the config information of radicale
-* /radicale/var - Purpose: Stores the calendars, adressbooks and all other objects
+* **/radicale/etc** - Directory of radicale configuration
+* **/radicale/var** - Directory of calendars, adressbooks and all other objects
 
 ## Run
 ```shell
 docker run --name radicale \
-    -v volume-etc:/radicale/etc \
-    -v volume-var:/radicale/var \
-    -d 11notes/radicale:[tag]
+  -v ../etc:/radicale/etc \
+  -v ../var:/radicale/var \
+  -d 11notes/radicale:[tag]
 ```
 
 ## Defaults
-* HTTP 401 / admin:foo, user:bar (/radicale/etc/users) - please change with bcrypt!
-* 4096bit runtime RSA (created at container start)
+| Parameter | Value | Description |
+| --- | --- | --- |
+| `user` | docker | user docker |
+| `uid` | 1000 | user id 1000 |
+| `gid` | 1000 | group id 1000 |
 
 ## radicale create objects
 Access the container via http://YOUR_IP:5232 and login as either one of the two default users (admin:1234, user:1234) or create new users first. You can then create the desired CalDAV or CardDAV objects.
@@ -80,15 +83,14 @@ permission: r
 
 If the access_user has his own addressbook & the global addressbook, just remove the symbolic link for access_user but leave the rights to be able to read the main_user addressbook. The collection name supports RegExp.
 
-## Docker -u 1000:1000 (no root initiative)
-As part to make containers more secure, this container will not run as root, but as uid:gid 1000:1000.
+## Parent
+* [11notes/nginx:stable](https://github.com/11notes/docker-nginx)
 
-## Build with
-* [Alpine Linux](https://alpinelinux.org/) - Alpine Linux
-* [radicale](https://radicale.org/about/) - radicale CalDAV/CardDAV server (created by Kozea@github)
+## Built with
+* [radicale](https://radicale.org/about)
+* [Alpine Linux](https://alpinelinux.org)
 
 ## Tips
-
-* Don't bind to ports < 1024 (requires root), use NAT
-* [Permanent Storge with NFS/CIFS/...](https://github.com/11notes/alpine-docker-netshare) - Module to store permanent container data via NFS/CIFS/...
+* Don't bind to ports < 1024 (requires root), use NAT/reverse proxy
+* [Permanent Storage](https://github.com/11notes/alpine-docker-netshare) - Module to store permanent container data via NFS/CIFS and more
 * [Outlook CalDAV/CardDAV sync](https://caldavsynchronizer.org/) - Plugin to sync outlook with any CalDAV or CardDAV server

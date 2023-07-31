@@ -1,9 +1,14 @@
-[admin]
-user: admin
-collection: .*
-permission: Ww
+[_]
+user: .+
+collection:
+permissions: R
 
 [user]
-user: user
-collection: .*
-permission: Rr
+user: .+
+collection: {user}
+permissions: RW
+
+[user-inherit]
+user: .+
+collection: {user}/[^/]+
+permissions: rw
