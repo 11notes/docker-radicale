@@ -1,4 +1,4 @@
-# Alpine :: Certbot
+# Alpine :: Radicale
 Run Radicale based on Alpine Linux. Small, lightweight, secure and fast 🏔️
 
 ## Volumes
@@ -21,7 +21,7 @@ docker run --name radicale \
 | `gid` | 1000 | group id 1000 |
 
 ## radicale create objects
-Access the container via http://YOUR_IP:5232 and login as either one of the two default users (admin:1234, user:1234) or create new users first. You can then create the desired CalDAV or CardDAV objects.
+Access the container via https://${IP}:5232 and login as either one of the two default users (admin:1234, user:1234) or create new users first. You can then create the desired CalDAV or CardDAV objects.
 
 ## radicale auth
 This radicale container will authenticate all users present in the /radicale/etc/users file. You can add and remove users from the /radicale/etc/users file by using htpasswd (either directly in the container or from a remote system).
@@ -91,6 +91,4 @@ If the access_user has his own addressbook & the global addressbook, just remove
 * [Alpine Linux](https://alpinelinux.org)
 
 ## Tips
-* Don't bind to ports < 1024 (requires root), use NAT/reverse proxy
-* [Permanent Storage](https://github.com/11notes/alpine-docker-netshare) - Module to store permanent container data via NFS/CIFS and more
 * [Outlook CalDAV/CardDAV sync](https://caldavsynchronizer.org/) - Plugin to sync outlook with any CalDAV or CardDAV server

@@ -4,8 +4,6 @@
 # :: SSL Settings
   ENV APP_VERSION=3.1.8
   ENV APP_ROOT=/radicale
-  ENV SSL_RSA_BITS=4096
-  ENV SSL_ROOT="${APP_ROOT}/ssl"
 
 # :: Run
   USER root
@@ -24,7 +22,8 @@
         openssl; \
       python3 -m ensurepip; \
       pip3 install --upgrade pip setuptools; \
-      /usr/bin/python3 -m pip install --upgrade https://github.com/Kozea/radicale/archive/refs/tags/v${APP_VERSION}.tar.gz;
+      /usr/bin/python3 -m pip install --upgrade https://github.com/Kozea/radicale/archive/refs/tags/v${APP_VERSION}.tar.gz; \
+      apk --no-cache upgrade;
       
     RUN set -ex; \
       apk --no-cache --virtual vbcrypt add \
