@@ -1,4 +1,6 @@
 # Alpine :: Radicale
+![size](https://img.shields.io/docker/image-size/11notes/radicale/3.1.8?color=0eb305) ![version](https://img.shields.io/docker/v/11notes/radicale?color=eb7a09) ![pulls](https://img.shields.io/docker/pulls/11notes/radicale?color=2b75d6) ![activity](https://img.shields.io/github/commit-activity/m/11notes/docker-radicale?color=c91cb8) ![commit-last](https://img.shields.io/github/last-commit/11notes/docker-radicale?color=c91cb8)
+
 Run Radicale based on Alpine Linux. Small, lightweight, secure and fast 🏔️
 
 ## Volumes
@@ -8,6 +10,7 @@ Run Radicale based on Alpine Linux. Small, lightweight, secure and fast 🏔️
 ## Run
 ```shell
 docker run --name radicale \
+  -p 5232:5232 \
   -v ../etc:/radicale/etc \
   -v ../var:/radicale/var \
   -d 11notes/radicale:[tag]
@@ -19,6 +22,10 @@ docker run --name radicale \
 | `user` | docker | user docker |
 | `uid` | 1000 | user id 1000 |
 | `gid` | 1000 | group id 1000 |
+| `home` | /radicale | home directory of user docker |
+| `web` | https://${IP}:5232 | default web ui |
+| `config` | /radicale/etc/default.conf | default config location |
+| `ssl` | /radicale/ssl | SSL is enabled by default |
 
 ## radicale create objects
 Access the container via https://${IP}:5232 and login as either one of the two default users (admin:1234, user:1234) or create new users first. You can then create the desired CalDAV or CardDAV objects.
@@ -83,12 +90,14 @@ permission: r
 
 If the access_user has his own addressbook & the global addressbook, just remove the symbolic link for access_user but leave the rights to be able to read the main_user addressbook. The collection name supports RegExp.
 
-## Parent
+## Parent image
 * [11notes/nginx:stable](https://github.com/11notes/docker-nginx)
 
-## Built with
+## Built with and thanks to
 * [radicale](https://radicale.org/about)
 * [Alpine Linux](https://alpinelinux.org)
 
 ## Tips
-* [Outlook CalDAV/CardDAV sync](https://caldavsynchronizer.org/) - Plugin to sync outlook with any CalDAV or CardDAV server
+* Do not expose container directly to the internet, use reverse proxy with ingress control and valid SSL certificate chain
+* Only use rootless container runtime (podman, rootless docker)
+* Don't bind to ports < 1024 (requires root), use NAT/reverse proxy (haproxy, traefik, nginx)
