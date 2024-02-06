@@ -11,6 +11,8 @@
   ENV APK_NAME="radicale"
   ENV APK_VERSION="3.1.8"
 
+  USER root
+
   RUN set -ex; \
     cd ~; \
     newapkbuild ${APK_NAME};
