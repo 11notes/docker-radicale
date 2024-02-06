@@ -62,7 +62,7 @@ filesystem_folder = /radicale/var
 
 [auth]
 type = radicale_auth_ldap
-ldap_url = ldap://domain.com:389
+ldap_url = ldaps://domain.com:636
 ldap_base = DC=domain,DC=com
 ldap_attribute = userPrincipalName
 ldap_filter = (objectCategory=person)(objectClass=user)(memberOf:1.2.840.113556.1.4.1941:=CN=Radicale Users,DC=domain,DC=com)
