@@ -6,28 +6,11 @@
       git; \
     git clone https://github.com/11notes/util.git;
 
-# :: Build
-  FROM 11notes/apk-build:stable as build
-  ENV APK_NAME="radicale"
-  ENV APK_VERSION="3.1.8"
-
-  RUN set -ex; \
-    cd ~; \
-    newapkbuild ${APK_NAME};
-
-  COPY ./build /apk/${APK_NAME}
-
-  RUN set -ex; \
-    cd ~/${APK_NAME}; \
-    sed -i "s/\$APK_VERSION/${APK_VERSION}/g" ./APKBUILD; \
-    abuild checksum; \
-    abuild -r;
-
 # :: Header
   FROM 11notes/alpine:stable
   COPY --from=util /util/linux/shell/elevenLogJSON /usr/local/bin
-  COPY --from=build /apk/packages/apk /tmp
-  ENV APK_NAME="radicale"
+  ENV APP_NAME="radicale"
+  ENV APP_VERSION="3.1.8-r2"
   ENV APP_ROOT=/radicale
 
 # :: Run
@@ -45,6 +28,7 @@
       apk add --no-cache --allow-untrusted --repository /tmp \
         radicale; \
       apk add --no-cache \
+        radicale=${APP_VERSION} \
         openssl \
         py3-pip \
         py3-ldap3; \

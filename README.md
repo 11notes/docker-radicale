@@ -6,7 +6,7 @@
 **CalDAV and CardDAV server with LDAP/AD authentication**
 
 # SYNOPSIS
-What can I do with this? This image will run [Radicale](https://radicale.org/) with an additional LDAP/AD authentication plugin. You can use this image to store or share calendars or address books, or both. Create fine grained ACL via the `rights`config, where you can give certain people only read-only access to objects in your shared address books or calendars.
+What can I do with this? This image will run [Radicale](https://radicale.org/) with an additional LDAP/AD authentication plugin. You can use this image to store or share calendars or address books, or both. Create fine grained ACL via the `rights` config, where you can give certain people read-only access to objects in your shared address books or calendars.
 
 # VOLUMES
 * **/radicale/etc** - Directory of default.conf
@@ -68,7 +68,6 @@ ldap_attribute = userPrincipalName
 ldap_filter = (objectCategory=person)(objectClass=user)(memberOf:1.2.840.113556.1.4.1941:=CN=Radicale Users,DC=domain,DC=com)
 ldap_binddn = CN=ldap.radicale,DC=domain,DC=com
 ldap_password = *************
-ldap_scope = SUBTREE
 
 [rights]
 type = from_file
