@@ -25,15 +25,13 @@
 
   # :: install application
     RUN set -ex; \
-      apk add --no-cache --allow-untrusted --repository /tmp \
-        radicale; \
-      apk add --no-cache \
+      apk add --no-cache --update \
         radicale=${APP_VERSION}${APP_RC} \
         openssl \
         py3-pip \
         py3-ldap3; \
       rm -rf /tmp/*; \
-      apk --no-cache \
+      apk --no-cache --update \
         upgrade;
 
   # :: copy root filesystem changes and add execution rights to init scripts

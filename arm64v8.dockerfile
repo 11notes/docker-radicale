@@ -19,49 +19,47 @@
   ENV APP_ROOT=/radicale
 
 # :: Run
-  USER root
+USER root
 
-  # :: prepare image
-    RUN set -ex; \
-      mkdir -p ${APP_ROOT}/etc; \
-      mkdir -p ${APP_ROOT}/var; \
-      mkdir -p ${APP_ROOT}/ssl;
+# :: prepare image
+  RUN set -ex; \
+    mkdir -p ${APP_ROOT}/etc; \
+    mkdir -p ${APP_ROOT}/var; \
+    mkdir -p ${APP_ROOT}/ssl;
 
-  # :: install application
-    RUN set -ex; \
-      apk add --no-cache --allow-untrusted --repository /tmp \
-        radicale; \
-      apk add --no-cache \
-        radicale=${APP_VERSION}${APP_RC} \
-        openssl \
-        py3-pip \
-        py3-ldap3; \
-      rm -rf /tmp/*; \
-      apk --no-cache \
-        upgrade;
+# :: install application
+  RUN set -ex; \
+    apk add --no-cache --update \
+      radicale=${APP_VERSION}${APP_RC} \
+      openssl \
+      py3-pip \
+      py3-ldap3; \
+    rm -rf /tmp/*; \
+    apk --no-cache --update \
+      upgrade;
 
-  # :: copy root filesystem changes and add execution rights to init scripts
-    COPY ./rootfs /
-    RUN set -ex; \
-      chmod +x -R /usr/local/bin
+# :: copy root filesystem changes and add execution rights to init scripts
+  COPY ./rootfs /
+  RUN set -ex; \
+    chmod +x -R /usr/local/bin
 
-  # :: install plugins
-    RUN set -ex; \
-      cd /plugins/radicale_auth_ldap; \
-      python3 -m pip install . --break-system-packages;
+# :: install plugins
+  RUN set -ex; \
+    cd /plugins/radicale_auth_ldap; \
+    python3 -m pip install . --break-system-packages;
 
-  # :: change home path for existing user and set correct permission
-    RUN set -ex; \
-      usermod -d ${APP_ROOT} docker; \
-      chown -R 1000:1000 \
-        ${APP_ROOT};
+# :: change home path for existing user and set correct permission
+  RUN set -ex; \
+    usermod -d ${APP_ROOT} docker; \
+    chown -R 1000:1000 \
+      ${APP_ROOT};
 
 # :: Volumes
-  VOLUME ["${APP_ROOT}/etc", "${APP_ROOT}/var", "${APP_ROOT}/ssl"]
+VOLUME ["${APP_ROOT}/etc", "${APP_ROOT}/var", "${APP_ROOT}/ssl"]
 
 # :: Monitor
-  HEALTHCHECK CMD /usr/local/bin/healthcheck.sh || exit 1
+HEALTHCHECK CMD /usr/local/bin/healthcheck.sh || exit 1
 
 # :: Start
-  USER docker
-  ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]	
+USER docker
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]	
