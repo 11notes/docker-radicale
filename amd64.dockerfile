@@ -10,7 +10,8 @@
   FROM 11notes/alpine:stable
   COPY --from=util /util/linux/shell/elevenLogJSON /usr/local/bin
   ENV APP_NAME="radicale"
-  ENV APP_VERSION="3.1.8-r2"
+  ENV APP_VERSION=3.1.9
+  ENV APP_RC="-r1"
   ENV APP_ROOT=/radicale
 
 # :: Run
@@ -18,7 +19,6 @@
 
   # :: prepare image
     RUN set -ex; \
-      ls -lah /tmp; \
       mkdir -p ${APP_ROOT}/etc; \
       mkdir -p ${APP_ROOT}/var; \
       mkdir -p ${APP_ROOT}/ssl;
@@ -28,7 +28,7 @@
       apk add --no-cache --allow-untrusted --repository /tmp \
         radicale; \
       apk add --no-cache \
-        radicale=${APP_VERSION} \
+        radicale=${APP_VERSION}${APP_RC} \
         openssl \
         py3-pip \
         py3-ldap3; \
@@ -53,7 +53,7 @@
         ${APP_ROOT};
 
 # :: Volumes
-  VOLUME ["${APP_ROOT}/etc", "${APP_ROOT}/var"]
+  VOLUME ["${APP_ROOT}/etc", "${APP_ROOT}/var", "${APP_ROOT}/ssl"]
 
 # :: Monitor
   HEALTHCHECK CMD /usr/local/bin/healthcheck.sh || exit 1
