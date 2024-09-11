@@ -9,7 +9,7 @@
 
   if [ -z "${1}" ]; then
     elevenLogJSON info "starting ${APP_NAME} (${APP_VERSION})"
-    set -- "/opt/radicale/bin/python3" \
+    set -- "/usr/bin/python3" \
       -m radicale \
       --config /radicale/etc/default.conf
   fi

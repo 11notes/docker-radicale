@@ -19,7 +19,7 @@
   ENV APP_ROOT=/radicale
 
 # :: Run
-USER root
+  USER root
 
 # :: prepare image
   RUN set -ex; \
@@ -34,7 +34,7 @@ USER root
       openssl \
       py3-pip \
       py3-ldap3; \
-    rm -rf /tmp/*; \
+    python3 -m pip install --upgrade radicale[bcrypt] --break-system-packages; \
     apk --no-cache --update \
       upgrade;
 

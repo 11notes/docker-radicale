@@ -30,7 +30,7 @@
         openssl \
         py3-pip \
         py3-ldap3; \
-      rm -rf /tmp/*; \
+      python3 -m pip install --upgrade radicale[bcrypt] --break-system-packages; \
       apk --no-cache --update \
         upgrade;
 
