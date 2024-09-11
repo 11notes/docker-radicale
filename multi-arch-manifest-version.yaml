@@ -1,0 +1,11 @@
+image: 11notes/radicale:3.1.9"
+manifests:
+  - image: 11notes/radicale:3.1.9"
+    platform:
+      architecture: amd64
+      os: linux
+  - image: 11notes/radicale:3.1.9"
+    platform:
+      architecture: arm64
+      os: linux
+      variant: v8
