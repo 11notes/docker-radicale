@@ -31,6 +31,7 @@
         py3-pip \
         py3-ldap3; \
       python3 -m pip install radicale[bcrypt] --break-system-packages; \
+      python3 -m pip install --upgrade pip; \
       apk --no-cache --update \
         upgrade;
 
