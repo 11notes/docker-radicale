@@ -23,15 +23,19 @@
       mkdir -p ${APP_ROOT}/var; \
       mkdir -p ${APP_ROOT}/ssl;
 
-  # :: install application
+# :: install application
     RUN set -ex; \
-      apk add --no-cache --update \
-        radicale=${APP_VERSION}${APP_RC} \
-        openssl \
-        py3-pip \
-        py3-ldap3; \
-      python3 -m pip install radicale[bcrypt] --break-system-packages; \
-      python3 -m pip install --upgrade pip; \
+    apk add --no-cache --update \
+      radicale=${APP_VERSION}${APP_RC} \
+      openssl \
+      py3-pip \
+      py3-ldap3;
+      
+    RUN set -ex; \
+      python3 -m pip install --upgrade pip --break-system-packages; \
+      python3 -m pip install radicale[bcrypt] --break-system-packages;
+      
+    RUN set -ex; \ 
       apk --no-cache --update \
         upgrade;
 
