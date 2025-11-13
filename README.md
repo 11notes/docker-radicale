@@ -9,10 +9,8 @@ Run rootless radicale
 
 [radicale](https://github.com/Kozea/Radicale) (created by [Kozea](https://github.com/Kozea/)) is a small but powerful CalDAV (calendars, to-do lists) and CardDAV (contacts) server.
 
-image Dashboard.png not found!
-
 # SYNOPSIS 📖
-**What can I do with this?** This image will give you a [rootless](https://github.com/11notes/RTFM/blob/main/linux/container/image/rootless.md) and leightweight Radicale installation.
+**What can I do with this?** This image will give you a [rootless](https://github.com/11notes/RTFM/blob/main/linux/container/image/rootless.md) and leightweight Radicale installation. It also offers a custom entrypoint that will create calendars or address books based on LDAP group membership (if LDAP is used), so you can easily share these with multiple users. See [compose.ldap.yml](https://github.com/11notes/docker-radicale/blob/master/compose.ldap.yml).
 
 # UNIQUE VALUE PROPOSITION 💶
 **Why should I run this image and not the other image(s) that already exist?** Good question! Because ...
@@ -109,6 +107,8 @@ To find out how you can change the default UID/GID of this container image, cons
 | `RADICALE_CONFIG` | Inline config written to /radicale/etc/default.conf | |
 | `RADICALE_RIGHTS` | Inline config written to /radicale/etc/rights | |
 | `RADICALE_USERS` | Inline config written to /radicale/etc/users | |
+| `RADICALE_LDAP_CALENDAR_GROUPS` | Comma separated list of LDAP groups to be created as calendars (calendar, journal and tasks) | |
+| `RADICALE_LDAP_ADDRESSBOOK_GROUPS` | Comma separated list of LDAP groups to be created as address books | |
 
 # MAIN TAGS 🏷️
 These are the main tags for the image. There is also a tag for each commit and its shorthand sha256 value.
@@ -145,4 +145,4 @@ docker pull quay.io/11notes/radicale:3.5.8
 # ElevenNotes™️
 This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [releases](https://github.com/11notes/docker-radicale/releases) for breaking changes. If you have any problems with using this image simply raise an [issue](https://github.com/11notes/docker-radicale/issues), thanks. If you have a question or inputs please create a new [discussion](https://github.com/11notes/docker-radicale/discussions) instead of an issue. You can find all my other repositories on [github](https://github.com/11notes?tab=repositories).
 
-*created 13.11.2025, 13:26:16 (CET)*
+*created 13.11.2025, 20:26:40 (CET)*
