@@ -4,7 +4,7 @@
 # GLOBAL
   ARG APP_UID=1000 \
       APP_GID=1000
-  ARG PYTHON_VERSION=3.13
+  ARG PYTHON_VERSION=3.14
 
 # :: FOREIGN IMAGES
   FROM 11notes/util AS util
@@ -43,9 +43,7 @@
 # :: RADICALE
   FROM 11notes/python:${PYTHON_VERSION} AS build
   COPY --from=wheels /pip/wheels /pip/wheels
-  ARG APP_VERSION \
-      APP_UID \
-      APP_GID
+  ARG APP_VERSION
   USER root
 
   RUN set -ex; \
