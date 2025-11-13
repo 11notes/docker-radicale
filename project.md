@@ -1,6 +1,4 @@
-${{ image: Dashboard.png }}
-
-${{ content_synopsis }} This image will give you a [rootless](https://github.com/11notes/RTFM/blob/main/linux/container/image/rootless.md) and leightweight Radicale installation.
+${{ content_synopsis }} This image will give you a [rootless](https://github.com/11notes/RTFM/blob/main/linux/container/image/rootless.md) and leightweight Radicale installation. It also offers a custom entrypoint that will create calendars or address books based on LDAP group membership (if LDAP is used), so you can easily share these with multiple users. See [compose.ldap.yml](https://github.com/11notes/docker-radicale/blob/master/compose.ldap.yml).
 
 ${{ content_uvp }} Good question! Because ...
 
@@ -30,6 +28,8 @@ ${{ content_environment }}
 | `RADICALE_CONFIG` | Inline config written to /radicale/etc/default.conf | |
 | `RADICALE_RIGHTS` | Inline config written to /radicale/etc/rights | |
 | `RADICALE_USERS` | Inline config written to /radicale/etc/users | |
+| `RADICALE_LDAP_CALENDAR_GROUPS` | Comma separated list of LDAP groups to be created as calendars (calendar, journal and tasks) | |
+| `RADICALE_LDAP_ADDRESSBOOK_GROUPS` | Comma separated list of LDAP groups to be created as address books | |
 
 ${{ content_source }}
 

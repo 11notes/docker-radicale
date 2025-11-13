@@ -1,0 +1,85 @@
+name: "caldav"
+
+x-lockdown: &lockdown
+  # prevents write access to the image itself
+  read_only: true
+  # prevents any process within the container to gain more privileges
+  security_opt:
+    - "no-new-privileges=true"
+
+services:
+  radicale:
+    image: "11notes/radicale:3.5.8"
+    <<: *lockdown
+    environment:
+      TZ: "Europe/Zurich"
+      RADICALE_CONFIG: |-
+        [server]
+        ssl = False
+        hosts = 0.0.0.0:5232
+        max_connections = 1024
+        max_content_length = 52428800
+
+        [storage]
+        type = multifilesystem_nolock
+        filesystem_folder = /radicale/var
+
+        [auth]
+        type = ldap
+        ldap_uri = ${LDAP_URI}
+        ldap_base = ${LDAP_BASE}
+        ldap_reader_dn = ${LDAP_USER}
+        ldap_secret = ${LDAP_PASSWORD}
+        ldap_filter = (&(objectclass=user)(|(userPrincipalName={0})(cn={0})(mail={0})))
+        ldap_user_attribute = userPrincipalName
+        ldap_groups_attribute = memberOf
+        lc_username = True
+
+        [rights]
+        type = from_file
+        file = /radicale/etc/rights
+
+        [logging]
+        level = warning
+        mask_passwords = True
+      RADICALE_RIGHTS: |-
+        [_]
+        user: .+
+        collection:
+        permissions: R
+
+        [user]
+        user: .+
+        collection: {user}
+        permissions: RW
+
+        [user-inherit]
+        user: .+
+        collection: {user}/[^/]+
+        permissions: rw
+
+        [groups-write]
+        groups: Radicale - Administrators
+        collection: GROUPS/[^/]+
+        permissions: rw
+
+        [calendarsReader]
+        user: .+
+        collection: GROUPS/[^/]+
+        permissions: r
+      RADICALE_LDAP_ADDRESSBOOK_GROUPS: "Radicale - Relatives"
+    ports:
+      - "3000:5232/tcp"
+    networks:
+      frontend:
+    volumes:
+      - "radicale.etc:/radicale/etc"
+      - "radicale.var:/radicale/var"
+    restart: "always"
+
+volumes:
+  radicale.etc:
+  radicale.var:
+
+networks:
+  frontend:
