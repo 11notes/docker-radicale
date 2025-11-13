@@ -1,0 +1,20 @@
+{
+  "image": "11notes/radicale",
+  "name": "radicale",
+  "root": "/radicale",
+  "semver": {
+    "version": "3.5.8"
+  },
+  "readme": {
+    "description": "Run rootless radicale",
+    "introduction": "[radicale](https://github.com/Kozea/Radicale) (created by [Kozea](https://github.com/Kozea/)) is a small but powerful CalDAV (calendars, to-do lists) and CardDAV (contacts) server.",
+    "built": {
+      "Kozea/Radicale": "https://github.com/Kozea/Radicale"
+    },
+    "comparison": {
+      "images": [
+        "ghcr.io/kozea/radicale"
+      ]
+    }
+  }
+}
