@@ -145,4 +145,4 @@ docker pull quay.io/11notes/radicale:3.5.8
 # ElevenNotes™️
 This image is provided to you at your own risk. Always make backups before updating an image to a different version. Check the [releases](https://github.com/11notes/docker-radicale/releases) for breaking changes. If you have any problems with using this image simply raise an [issue](https://github.com/11notes/docker-radicale/issues), thanks. If you have a question or inputs please create a new [discussion](https://github.com/11notes/docker-radicale/discussions) instead of an issue. You can find all my other repositories on [github](https://github.com/11notes?tab=repositories).
 
-*created 16.11.2025, 02:03:10 (CET)*
+*created 16.11.2025, 13:21:56 (CET)*
