@@ -2,8 +2,6 @@ name: org.readme
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 */12 * * *"
 
 jobs:
   # ╔═════════════════════════════════════════════════════╗
