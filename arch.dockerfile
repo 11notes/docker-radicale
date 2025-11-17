@@ -56,6 +56,14 @@
       radicale[ldap]=="${APP_VERSION}"; \
     rm -rf /pip;
 
+# :: FILE-SYSTEM
+  FROM alpine AS file-system
+  ARG APP_ROOT
+  
+  RUN set -ex; \
+    mkdir -p /distroless${APP_ROOT}/etc; \
+    mkdir -p /distroless${APP_ROOT}/var;
+
 # ╔═════════════════════════════════════════════════════╗
 # ║                       IMAGE                         ║
 # ╚═════════════════════════════════════════════════════╝
@@ -85,6 +93,7 @@
     COPY --from=distroless-localhealth / /
     COPY --from=entrypoint /distroless/ /
     COPY --from=build / /
+    COPY --from=file-system --chown=${APP_UID}:${APP_GID} /distroless/ /
     COPY --chown=${APP_UID}:${APP_GID} ./rootfs/ /
 
 # :: PERSISTENT DATA
