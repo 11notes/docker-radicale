@@ -160,6 +160,13 @@ jobs:
           ref: ${{ github.ref_name }}
           fetch-depth: 0
 
+      # SETUP NODE JS
+      - name: update / setup node
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '24'
+      - run: npm i semver
+
       # SETUP ENVIRONMENT VARIABLES AND INPUTS
       - name: init / setup environment
         id: setup-environment
@@ -173,6 +180,7 @@ jobs:
             const inputs = `${{ toJSON(github.event.inputs) }}`.
               replace(/"platform":\s*"\[(.+)\]",/i, `"platform": [$1],`);
             const opt = {input:{}, dot:{}};
+            const semver = require("semver");
 
             try{
               if(inputs.length > 0){
@@ -241,6 +249,8 @@ jobs:
               const result = await response.json();
               for(const dep in result){
                 docker.app[`${dep}_version`] = `${result[dep]}`;
+                docker.app[`${dep}_major_minor_version`] = `${semver.major(result[dep])}.${semver.minor(result[dep])}`;
+                docker.app[`${dep}_major_version`] = semver.major(result[dep]);
                 core.info(`setting APP_${String(dep).toUpperCase()}_VERSION to ${result[dep]}`);
               }
             }catch(e){
