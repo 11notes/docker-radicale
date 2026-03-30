@@ -1,5 +1,6 @@
 {
   "image": "11notes/radicale",
+  "platform":"amd64,arm64",
   "name": "radicale",
   "root": "/radicale",
   "semver": {
