@@ -3,8 +3,9 @@
 # ╚═════════════════════════════════════════════════════╝
 # GLOBAL
   ARG APP_UID=1000 \
-      APP_GID=1000
-  ARG PYTHON_VERSION=3.14
+      APP_GID=1000 \
+      APP_GO_VERSION=0 \
+      APP_PYTHON_VERSION=0
 
 # :: FOREIGN IMAGES
   FROM 11notes/util AS util
@@ -15,7 +16,7 @@
 # ║                       BUILD                         ║
 # ╚═════════════════════════════════════════════════════╝
 # :: ENTRYPOINT
-  FROM 11notes/go:1.25 AS entrypoint
+  FROM 11notes/go:${APP_GO_VERSION} AS entrypoint
   COPY ./build /
 
   RUN set -ex; \
@@ -24,7 +25,7 @@
     eleven distroless /entrypoint;
 
 # :: WHEELS
-  FROM 11notes/python:wheel-${PYTHON_VERSION} AS wheels
+  FROM 11notes/python:wheel-${APP_PYTHON_VERSION} AS wheels
   ARG APP_VERSION
   USER root
 
@@ -41,7 +42,7 @@
       radicale[ldap]=="${APP_VERSION}";
 
 # :: RADICALE
-  FROM 11notes/python:${PYTHON_VERSION} AS build
+  FROM 11notes/python:${APP_PYTHON_VERSION} AS build
   COPY --from=wheels /pip/wheels /pip/wheels
   ARG APP_VERSION
   USER root
