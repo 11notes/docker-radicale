@@ -182,6 +182,8 @@ jobs:
             const opt = {input:{}, dot:{}};
             const semverMajor = require("semver/functions/major");
             const semverMinor = require("semver/functions/minor");
+            const semverValid = require("semver/functions/valid");
+            const semverCoerce = require("semver/functions/coerce");
 
             try{
               if(inputs.length > 0){
@@ -249,9 +251,10 @@ jobs:
               }
               const result = await response.json();
               for(const dep in result){
+                const depSemver = semverValid(semverCoerce(result[dep]));
                 docker.app[`${dep}_version`] = `${result[dep]}`;
-                docker.app[`${dep}_major_minor_version`] = `${semverMajor(result[dep])}.${semverMinor(result[dep])}`;
-                docker.app[`${dep}_major_version`] = semverMajor(result[dep]);
+                docker.app[`${dep}_major_minor_version`] = `${semverMajor(depSemver)}.${semverMinor(depSemver)}`;
+                docker.app[`${dep}_major_version`] = semverMajor(depSemver);
                 core.info(`setting APP_${String(dep).toUpperCase()}_VERSION to ${result[dep]}`);
               }
             }catch(e){
