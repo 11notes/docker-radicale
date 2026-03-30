@@ -24,38 +24,27 @@
     eleven go build /entrypoint main.go; \
     eleven distroless /entrypoint;
 
-# :: WHEELS
-  FROM 11notes/python:wheel-${APP_PYTHON_VERSION} AS wheels
-  ARG APP_VERSION
-  USER root
-
-  RUN set -ex; \
-    mkdir -p /pip/wheels;
-
-  RUN set -ex; \
-    pip wheel \
-      --wheel-dir /pip/wheels \
-      -f https://11notes.github.io/python-wheels/ \
-      radicale=="${APP_VERSION}" \
-      radicale[bcrypt]=="${APP_VERSION}" \
-      radicale[argon2]=="${APP_VERSION}" \
-      radicale[ldap]=="${APP_VERSION}";
 
 # :: RADICALE
   FROM 11notes/python:${APP_PYTHON_VERSION} AS build
-  COPY --from=wheels /pip/wheels /pip/wheels
   ARG APP_VERSION
   USER root
 
   RUN set -ex; \
     pip install \
-      --no-index \
-      -f /pip/wheels \
+      uv;
+
+  RUN set -ex; \
+    uv pip install \
+      --only-binary=:all: \
       radicale=="${APP_VERSION}" \
       radicale[bcrypt]=="${APP_VERSION}" \
       radicale[argon2]=="${APP_VERSION}" \
-      radicale[ldap]=="${APP_VERSION}"; \
-    rm -rf /pip;
+      radicale[ldap]=="${APP_VERSION}";
+
+  RUN set -ex; \
+    pip uninstall -y \
+      uv;
 
 # :: FILE-SYSTEM
   FROM alpine AS file-system
