@@ -9,7 +9,7 @@ x-lockdown: &lockdown
 
 services:
   radicale:
-    image: "11notes/radicale:3.7.1"
+    image: "11notes/radicale:3.7.2"
     <<: *lockdown
     environment:
       TZ: "Europe/Zurich"
