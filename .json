@@ -4,7 +4,7 @@
   "name": "radicale",
   "root": "/radicale",
   "semver": {
-    "version": "3.7.1"
+    "version": "3.7.2"
   },
   "readme": {
     "description": "Run rootless radicale",
