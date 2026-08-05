@@ -5,7 +5,7 @@
   ARG APP_UID=1000 \
       APP_GID=1000 \
       APP_GO_VERSION=0 \
-      APP_PYTHON_VERSION=0
+      APP_PYTHON_MAJOR_MINOR_VERSION=0
 
 # :: FOREIGN IMAGES
   FROM 11notes/util AS util
@@ -26,7 +26,7 @@
 
 
 # :: RADICALE
-  FROM 11notes/python:${APP_PYTHON_VERSION} AS build
+  FROM 11notes/python:${APP_PYTHON_MAJOR_MINOR_VERSION} AS build
   ARG APP_VERSION
   USER root
 
