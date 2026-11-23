@@ -49,7 +49,7 @@
 # :: FILE-SYSTEM
   FROM alpine AS file-system
   ARG APP_ROOT
-  
+
   RUN set -ex; \
     mkdir -p /distroless${APP_ROOT}/etc; \
     mkdir -p /distroless${APP_ROOT}/var;
