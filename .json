@@ -17,5 +17,7 @@
         "ghcr.io/kozea/radicale"
       ]
     }
-  }
+  },
+  "unraid": true,
+  "nobody": true
 }
